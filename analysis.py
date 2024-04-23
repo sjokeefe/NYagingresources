@@ -8,5 +8,12 @@ Disparities in NY State Older Adult food insecurity
 import geopandas as gpd
 import pandas as pd
 import seaborn as sns 
-import matplotlib as plt 
+import matplotlib.pyplot as plt 
+
+#setting default DPI 
+plt.rcParams['figure.dpi'] = 300
+ 
+#reading in csv files and geopackages produced in earlier scripts
+census = pd.read_csv('census.csv')
+NYSOFA = gpd.read_file('AAAmeals.gpkg')
 

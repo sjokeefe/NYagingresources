@@ -15,7 +15,7 @@ meals = pd.DataFrame(meals)
 
 meals = meals.rename(columns = {'NYSOFA County Code': 'County Code', 'Meal Units Served': 'Total Meals Served'})
 #deleting data from before 2018 for relevance 
-meals = meals[meals['Year']==2020]
+meals = meals[meals['Year']==2021]
 meals['Home Delivered Meals Served'] = meals['Total Meals Served'].where(meals['Meal Type'] == 'Home Delivered Meals')
 meals['Congregate Meals Served'] = meals['Total Meals Served'].where(meals['Meal Type'] == 'Congregate Meals')
 
@@ -65,8 +65,9 @@ cr['longitude'] = cr['georeference'].apply(lambda x: x['coordinates'][0])
 cr['latitude'] = cr['latitude'].astype(float)
 cr['longitude'] = cr['longitude'].astype(float)
 
-#setting the index 
+#setting the index
 cr.set_index("county_name", inplace=True)
+
 # Creating a GeoDataFrame from DataFrame
 crgeo = gpd.GeoDataFrame(cr, crs='EPSG:4326', geometry=gpd.points_from_xy(cr.longitude, cr.latitude))
 
@@ -81,6 +82,26 @@ cr_by_county = crgeo.groupby('county_name').size()
 #renaming the column produced 
 cr_by_county = cr_by_county.rename("Number of Community Sites")
 
+
+#using geopandas to read the US county shapefile
+geodata = gpd.read_file('tl_2023_us_county.zip')
+#filtering geodata down to NY counties 
+geodata = geodata.query('STATEFP == "36"')
+
+#merging onto the Census data
+#setting the index for merging 
+geodata.rename(columns={'NAME':'county_name'}, inplace=True)
+geodata.set_index('county_name',inplace=True)
+geodata = geodata.merge(cr_by_county, on='county_name',how='left', indicator=True)
+#value counts for "_merge" 
+print(geodata['_merge'].value_counts() )
+geodata.drop(columns='_merge',inplace=True)
+
+#filling in nan values with zero for QGIS purposes
+geodata['Number of Community Sites'].fillna(0, inplace=True)
+
+#writing the dataframe to a .gpkg file with layer set to 'earnings'
+geodata.to_file("cr.gpkg",layer="resources")
 
 ##################################################################################################################################
 #Open data NY api request for the directory of AAA sites 
@@ -122,8 +143,11 @@ print("\nNY Counties with zero (0) multi-purpose community centers for older adu
 for county_name in no_sites:
     print(county_name)
     
+        
 #merging the meals data onto the AAA data 
 AAA_by_county = pd.merge(AAA_by_county, meals_aggregate, how='left', left_index=True, right_index=True)
+#dropping unneeded columns
+AAA_by_county = AAA_by_county.drop(columns=['nysofa_county_code', 'service_provider'])
 
 #trimming the dataframe/dropping columns not needed for further analysis 
 trimmed = ['resource_type','street_address', 'city','state','zip','phone' ]
@@ -135,7 +159,6 @@ output_filename2 = "AAAmeals.gpkg"
 AAA_by_county.to_file(output_filename2, driver="GPKG")
 
 ###################################################################################################################
-
 
 
 
