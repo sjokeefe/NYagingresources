@@ -58,12 +58,13 @@ fig.savefig('censusplots.png')
 
 #seeing the proportion of total households on SNAP that have a member age 60+ 
 census['percent']= census['Household with Food Stamp, 60+ member']/census['Total Households on SNAP']*100
-#printing the ten counties with the highest proportion of older adult SNAP participants in the past 12 months 
-census = census.sort_values(by='percent', ascending=False)
-print("Counties with the highest percentages of total SNAP participating households containing a member age 60+: ")
-print(census.head(10))
 
-census = census.sort_values(by='% below pl 65+', ascending=False)
-print("Counties with the highest percent of total population age 65+ living below the poverty level:")
-print(census.head(10))
+by_percent = census['percent'].sort_values( ascending=False)
+print("Counties with the Highest Percentage of SNAP Households with a member age 60+")
+print(by_percent.head(10))
+
+by_below = census['% below pl 65+'].sort_values(ascending=False)
+print("\nCounties with the Highest Percent of Older Adults (age 65+) living below the poverty line")
+print(by_below.head(10))
+
 

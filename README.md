@@ -1,13 +1,15 @@
 # Disparities in NY State Older Adult Food Insecurity 
 ## Summary
 
-This project examines the distribution of access to state-wide food assistance resources for low-income older adults living in NY state offered by NY State Office for the Aging (NYSOFA). 
-Census-level population and spatial data is also analyzed, focusing on variables that most likely indicate economic and food insecurity amongst older adults.
+This project examines the distribution of access to state-wide food assistance resources for low-income older adults living in NY state offered by NY State Office for the Aging (NYSOFA). Data on New York State's Area Agencies on Aging  (local administrative offices) as well as multi-purpose senior centers where services including, but not limited to, congregate meals are provided to older adults. 
+Census-level population and spatial data is also analyzed, focusing on variables that indicate economic and food insecurity amongst older adults, as well as SNAP/food stamp utilization.
 
 ## Input files 
 The first input file is a csv from data.ny.gov, NY State's Open Data site. The csv file can be downloaded here: https://data.ny.gov/Human-Services/Congregate-Meals-Served-by-County-by-the-Office-fo/ytzm-8tkg/about_data
+This file, marked as [NYSOFA_meals.csv holds]() county-level data of congregate and home-delivered meals served to older adults in NY State since 1974. Congregate meals, served in community settings such as in multi-purpose senior centers, and home-delivered meals are targeted towards supporting low-income older adults. 
 
 The following scripts also require API requests from data.ny.gov as well as the Census Bureau. For the Census API query, a unique Census key will be necessary. In [census.py](census.py), replace variable 'key_value' with a unique census key retrieved here: https://api.census.gov/data/key_signup.html
+(No API key is needed for data.ny.gov)
 
 Spatial data is retrieved from the Census website. Tiger-line shape files for New York State counties can be downloaded here: 
 
