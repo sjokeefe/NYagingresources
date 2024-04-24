@@ -6,15 +6,33 @@ NYS County-Level Data
 import requests
 import pandas as pd 
 import geopandas as gpd
+import matplotlib.pyplot as plt
+import seaborn as sns
+plt.rcParams['figure.dpi'] = 300
+############################################################################################
 
-##################################################################################################################################
 #reading in data on meals served by county
 meals = pd.read_csv('NYSOFA_Meals.csv')
 # Converting JSON data to DataFrame
 meals = pd.DataFrame(meals)
 
 meals = meals.rename(columns = {'NYSOFA County Code': 'County Code', 'Meal Units Served': 'Total Meals Served'})
-#deleting data from before 2018 for relevance 
+
+#looking at meals served over time in onondaga county 
+quicklook = meals[meals['County Name']=='Onondaga']
+fig, ax1 = plt.subplots()
+sns.barplot(data=quicklook,x='Year',y='Total Meals Served',
+            hue='Meal Type',palette='deep',ax=ax1)
+plt.xticks(rotation=45, ha='right', fontsize=6)
+plt.tight_layout()
+plt.show()
+ax1.set_title("NYSOFA Meals Served (Onondaga County, Since 1974)")
+ax1.set_xlabel("Year")
+ax1.set_ylabel("Meals Served")
+fig.tight_layout()
+fig.savefig('onondagameals.png')
+
+#parcing out certain years 
 meals = meals[meals['Year']==2021]
 meals['Home Delivered Meals Served'] = meals['Total Meals Served'].where(meals['Meal Type'] == 'Home Delivered Meals')
 meals['Congregate Meals Served'] = meals['Total Meals Served'].where(meals['Meal Type'] == 'Congregate Meals')
@@ -37,10 +55,10 @@ meals_sorted = meals_aggregate.sort_values(by='Total Meals Served', ascending=Fa
 
 #printing informative messages about congregate meals and home delivered meals served by county
 top_5 = meals_sorted.head(5)
-print("\nTop 5 Counties Ranks by Total Number of Congregate and Home Delivered Meals Meals Served in 2020:")
+print("\nTop 5 Counties Ranks by Total Number of Congregate and Home Delivered Meals Meals Served in 2021:")
 print(top_5['Total Meals Served'])
 bottom_5 = meals_sorted.tail(5)
-print("\n5 Counties serving the least number of congregate and home delivered meals in 2020:", bottom_5['Total Meals Served'])
+print("\n5 Counties serving the least number of congregate and home delivered meals in 2021:", bottom_5['Total Meals Served'])
 
 
 ############################################################################################################################################
@@ -88,6 +106,7 @@ geodata = gpd.read_file('tl_2023_us_county.zip')
 #filtering geodata down to NY counties 
 geodata = geodata.query('STATEFP == "36"')
 
+
 #merging onto the Census data
 #setting the index for merging 
 geodata.rename(columns={'NAME':'county_name'}, inplace=True)
@@ -103,7 +122,8 @@ geodata['Number of Community Sites'].fillna(0, inplace=True)
 #writing the dataframe to a .gpkg file with layer set to 'earnings'
 geodata.to_file("cr.gpkg",layer="resources")
 
-##################################################################################################################################
+
+############################################################################
 #Open data NY api request for the directory of AAA sites 
 url2 = "https://data.ny.gov/resource/t8nk-j66w.json"
 response2 = requests.get(url2)
@@ -148,6 +168,10 @@ for county_name in no_sites:
 AAA_by_county = pd.merge(AAA_by_county, meals_aggregate, how='left', left_index=True, right_index=True)
 #dropping unneeded columns
 AAA_by_county = AAA_by_county.drop(columns=['nysofa_county_code', 'service_provider'])
+#resetting the index
+AAA_by_county.reset_index(drop=False, inplace=True)
+#renaming the county column 
+AAA_by_county.rename(columns={'county_name': 'NAME'}, inplace=True)
 
 #trimming the dataframe/dropping columns not needed for further analysis 
 trimmed = ['resource_type','street_address', 'city','state','zip','phone' ]
@@ -158,7 +182,7 @@ for column in trimmed:
 output_filename2 = "AAAmeals.gpkg"
 AAA_by_county.to_file(output_filename2, driver="GPKG")
 
-###################################################################################################################
+###################################################################
 
 
 
