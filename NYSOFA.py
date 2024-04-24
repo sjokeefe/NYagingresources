@@ -18,6 +18,20 @@ meals = pd.DataFrame(meals)
 
 meals = meals.rename(columns = {'NYSOFA County Code': 'County Code', 'Meal Units Served': 'Total Meals Served'})
 
+#looking at meals served over time in Madison county 
+quicklook = meals[meals['County Name']=='Madison']
+fig, ax1 = plt.subplots()
+sns.barplot(data=quicklook,x='Year',y='Total Meals Served',
+            hue='Meal Type',palette='deep',ax=ax1)
+plt.xticks(rotation=45, ha='right', fontsize=6)
+plt.tight_layout()
+plt.show()
+ax1.set_title("NYSOFA Meals Served (Madison County, Since 1974)")
+ax1.set_xlabel("Year")
+ax1.set_ylabel("Meals Served")
+fig.tight_layout()
+fig.savefig('madisonmeals.png')
+
 #looking at meals served over time in onondaga county 
 quicklook = meals[meals['County Name']=='Onondaga']
 fig, ax1 = plt.subplots()
@@ -31,6 +45,7 @@ ax1.set_xlabel("Year")
 ax1.set_ylabel("Meals Served")
 fig.tight_layout()
 fig.savefig('onondagameals.png')
+
 
 #parcing out certain years 
 meals = meals[meals['Year']==2021]

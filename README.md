@@ -27,4 +27,6 @@ Creates visualizations using matplotlib and seaborn.
 Further analysis using outputs from both [NYSOFA.py](NYSOFA.py) and [census.py](census.py). 
 
 ## Results
+Based on the analysis conducted in the scripts above, I noticed that Madison County, New York has Zero Multi-Purpose Senior Centers (places where older adults could obtain congregate meals or where home-delivered meals might be distributed from), but also had the 4th highest percentage of all SNAP participating households with an older adult member (age 65+), roughly 57.95%. 
+
 
