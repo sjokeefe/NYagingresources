@@ -9,7 +9,7 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 import seaborn as sns
 plt.rcParams['figure.dpi'] = 300
-############################################################################################
+
 
 #reading in data on meals served by county
 meals = pd.read_csv('NYSOFA_Meals.csv')
@@ -70,13 +70,13 @@ meals_sorted = meals_aggregate.sort_values(by='Total Meals Served', ascending=Fa
 
 #printing informative messages about congregate meals and home delivered meals served by county
 top_5 = meals_sorted.head(5)
-print("\nTop 5 Counties Ranks by Total Number of Congregate and Home Delivered Meals Meals Served in 2021:")
+print("\nTop 5 Counties Ranks by Total Number of Congregate and Home Delivered Meals Meals Served (2021):")
 print(top_5['Total Meals Served'])
 bottom_5 = meals_sorted.tail(5)
-print("\n5 Counties serving the least number of congregate and home delivered meals in 2021:", bottom_5['Total Meals Served'])
+print("\n5 Counties serving the least number of congregate and home delivered meals (2021):", bottom_5['Total Meals Served'])
 
 
-############################################################################################################################################
+
 
 #Open data NY api request for the directory multi-purpose senior centers, which provide services including but not limited to congregate meals   
 url = "https://data.ny.gov/resource/t4ba-giyx.json"
@@ -138,7 +138,8 @@ geodata['Number of Community Sites'].fillna(0, inplace=True)
 geodata.to_file("cr.gpkg",layer="resources")
 
 
-############################################################################
+
+
 #Open data NY api request for the directory of AAA sites 
 url2 = "https://data.ny.gov/resource/t8nk-j66w.json"
 response2 = requests.get(url2)
@@ -177,8 +178,19 @@ no_sites = AAA_by_county[AAA_by_county['Number of Community Sites']== 0].index
 print("\nNY Counties with zero (0) multi-purpose community centers for older adult services:")
 for county_name in no_sites:
     print(county_name)
+
+#2 multi-purpose senior centers 
+two = AAA_by_county[AAA_by_county['Number of Community Sites']==2].index
+print("\nNY Counties with 2 multi-purpose community centers for older adult services:")
+for county_name in two:
+    print(county_name)    
+
+#1 multi-purpose senior center 
+one = AAA_by_county[AAA_by_county['Number of Community Sites']==1].index
+print("\nNY Counties with 1 multi-purpose community center for older adult services:")
+for county_name in one:
+    print(county_name)
     
-        
 #merging the meals data onto the AAA data 
 AAA_by_county = pd.merge(AAA_by_county, meals_aggregate, how='left', left_index=True, right_index=True)
 #dropping unneeded columns
@@ -197,7 +209,6 @@ for column in trimmed:
 output_filename2 = "AAAmeals.gpkg"
 AAA_by_county.to_file(output_filename2, driver="GPKG")
 
-###################################################################
 
 
 

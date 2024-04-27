@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 import requests
 import pandas as pd
 
-# API endpoint for 1-year estimates
-api = 'https://api.census.gov/data/2021/acs/acs1'
+# API endpoint for 5-year estimates 2017-2021
+api = 'https://api.census.gov/data/2021/acs/acs5'
 
 # Indicating the type of geographic unit that should be returned
 for_clause = 'county:*'
@@ -55,7 +55,7 @@ foodstamp = foodstamp.sort_values(by='Household with Food Stamp, 60+ member', as
 
 ##########################################################################################
 # API endpoint
-apisubject = 'https://api.census.gov/data/2021/acs/acs1/subject'
+apisubject = 'https://api.census.gov/data/2021/acs/acs5/subject'
 
 # Creating a new dictionary for parameters
 #All families!!Percent below poverty level!!Estimate!!Householder 65 years and 
@@ -94,6 +94,8 @@ census = pd.merge(foodstamp, subject['% below pl 65+'], left_index=True, right_i
 census = pd.merge(census, subject['Total Population 60+'], left_index=True, right_index=True)
 #dropping the state and county columns 
 census = census.drop(columns=['state', 'county'])
+
+
 #setting the index to the county name 
 census.set_index('NAME', inplace=True)
 

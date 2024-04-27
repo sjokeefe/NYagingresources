@@ -9,7 +9,6 @@ import geopandas as gpd
 import pandas as pd
 import seaborn as sns 
 import matplotlib.pyplot as plt 
-
 #setting default DPI 
 plt.rcParams['figure.dpi'] = 300
  
@@ -36,7 +35,7 @@ fig, axes = plt.subplots(2, 2, figsize=(12,10))
 census['Household with Food Stamp, 60+ member'].plot(kind='bar', ax=axes[0, 0])
 axes[0, 0].set_title('Total Households Using SNAP/Food Stamps by County, with member age 60+')
 axes[0, 0].set_ylabel('Households')
-axes[0,0].set_xlabel('County')
+axes[0,0].set_xlabel('County', fontsize=7)
 
 #Scatter plot of % below poverty line 65+ vs Total Population 65+
 sns.scatterplot(data=census, x='% below pl 65+', y='Total Population 60+', ax=axes[0, 1])
@@ -56,6 +55,7 @@ plt.tight_layout()
 #saving the figure
 fig.savefig('censusplots.png')
 
+
 #seeing the proportion of total households on SNAP that have a member age 60+ 
 census['percent']= census['Household with Food Stamp, 60+ member']/census['Total Households on SNAP']*100
 
@@ -66,5 +66,46 @@ print(by_percent.head(10))
 by_below = census['% below pl 65+'].sort_values(ascending=False)
 print("\nCounties with the Highest Percent of Older Adults (age 65+) living below the poverty line")
 print(by_below.head(10))
+
+#highlighting genesee county in a visual representation of percent of all households on SNAP with an older adult 
+by_percent = by_percent.reset_index()
+plt.figure(figsize=(10, 6))
+bars = plt.bar(by_percent['NAME'], by_percent['percent'], color='skyblue')
+
+highlighted_county = 'Genesee'
+highlighted_index = by_percent[by_percent['NAME'] == highlighted_county].index[0]
+bars[highlighted_index].set_color('orange')
+
+# Adding labels and title
+plt.xlabel('County')
+plt.ylabel('Percent')
+plt.title('Percent of Total SNAP Households with at Least One Member Age 60+')
+# Rotate x-axis labels for better readability
+plt.xticks(rotation=90)
+plt.savefig('olderadultsonSNAP.png', bbox_inches='tight')
+# Show plot
+plt.show()
+
+
+#comparing community sites to the population of older adults 
+NYSOFA = NYSOFA.set_index('NAME')
+both_data = pd.merge(census, NYSOFA, left_index=True, right_index=True)
+ratio = both_data['Number of Community Sites']/both_data['Household with Food Stamp, 60+ member']
+print("Ratio of Community Sites per county to number of households participating in SNAP with older adult member:")
+print(ratio.sort_values())
+ratio_total = both_data['Number of Community Sites']/ both_data['Total Population 60+']
+print("Ratio of Number of Community sites per county to total population of older adults in each county:")
+print(ratio_total.sort_values())
+
+#population distribution 
+census= census.reset_index()
+plt.figure(figsize=(10,6))
+plt.bar(census['NAME'], census['Total Population 60+'], color='skyblue')
+plt.xlabel('County')
+plt.ylabel('Population')
+plt.title('Total Population Distribution by County, Age 60+')
+plt.xticks(rotation=90, fontsize=8)
+plt.tight_layout()
+plt.savefig('population.png')
 
 
