@@ -5,13 +5,15 @@ This project examines the distribution of access to state-wide food assistance r
 Census-level population and spatial data is also analyzed, focusing on variables that indicate economic and food insecurity amongst older adults, as well as SNAP/food stamp utilization.
 
 ## Input files 
-The first input file is a csv from data.ny.gov, NY State's Open Data site. The csv file can be downloaded here: https://data.ny.gov/Human-Services/Congregate-Meals-Served-by-County-by-the-Office-fo/ytzm-8tkg/about_data
-This file, marked as [NYSOFA_meals.csv holds](NYSOFA_Meals.csv) county-level data of congregate and home-delivered meals served to older adults in NY State since 1974. Congregate meals, served in community settings such as in multi-purpose senior centers, and home-delivered meals are targeted towards supporting low-income older adults. 
+The first input file required is a csv from data.ny.gov, NY State's Open Data site. The csv file can be downloaded here: https://data.ny.gov/Human-Services/Congregate-Meals-Served-by-County-by-the-Office-fo/ytzm-8tkg/about_data
+This file, marked as [NYSOFA_meals.csv](NYSOFA_Meals.csv) contains county-level data of congregate and home-delivered meals served to older adults in NY State since 1974. Congregate meals, served in community settings such as in multi-purpose senior centers, and home-delivered meals are targeted towards supporting low-income older adults. 
 
-The following scripts also require API requests from data.ny.gov as well as the Census Bureau. For the Census API query, a unique Census key will be necessary. In [census.py](census.py), replace variable 'key_value' with a unique census key retrieved here: https://api.census.gov/data/key_signup.html
-(No API key is needed for data.ny.gov)
+The following scripts also require API requests from the United States Census Bureau. For the Census API query, a unique Census key will be necessary. In [census.py](census.py), replace variable 'key_value' with a unique census key retrieved here: https://api.census.gov/data/key_signup.html
 
-Spatial data is retrieved from the Census website. Tiger-line shape files for New York State counties can be downloaded here: https://www.census.gov/cgi-bin/geo/shapefiles/index.php
+Spatial data is retrieved from the Census website. Tiger-line shape files for New York State counties and roads can be downloaded here: https://www.census.gov/cgi-bin/geo/shapefiles/index.php
+The shapefiles used in script analysis.py and yates.py are: 
+1. tl_2023_us_county.zip (Counties and equivalent of NY State)
+2. tl_2023_36123_roads.zip (All roads in Yates County, NY)
 
 ## Scripts 
 To view contents of the repository, run the following scripts in this order: 
@@ -25,6 +27,8 @@ Creates visualizations using matplotlib and seaborn.
 
 3. [analysis.py](analysis.py)
 Further analysis using outputs from both [NYSOFA.py](NYSOFA.py) and [census.py](census.py). 
+
+4. 
 
 ## Results
 Based on the analysis conducted in the scripts above, I noticed that Madison County, New York has Zero Multi-Purpose Senior Centers (places where older adults could obtain congregate meals or where home-delivered meals might be distributed from), but also had the 4th highest percentage of all SNAP participating households with an older adult member (age 65+), roughly 57.95%. 

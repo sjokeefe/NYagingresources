@@ -15,8 +15,8 @@ plt.rcParams['figure.dpi'] = 300
 meals = pd.read_csv('NYSOFA_Meals.csv')
 # Converting JSON data to DataFrame
 meals = pd.DataFrame(meals)
-
 meals = meals.rename(columns = {'NYSOFA County Code': 'County Code', 'Meal Units Served': 'Total Meals Served'})
+
 
 #looking at meals served over time in Madison county 
 quicklook = meals[meals['County Name']=='Madison']
@@ -52,6 +52,20 @@ meals = meals[meals['Year']==2021]
 meals['Home Delivered Meals Served'] = meals['Total Meals Served'].where(meals['Meal Type'] == 'Home Delivered Meals')
 meals['Congregate Meals Served'] = meals['Total Meals Served'].where(meals['Meal Type'] == 'Congregate Meals')
 
+#looking at meals served over time in Yates county 
+quicklook = meals[meals['County Name']=='Yates']
+fig, ax1 = plt.subplots()
+sns.barplot(data=quicklook,x='Year',y='Total Meals Served',
+            hue='Meal Type',palette='deep',ax=ax1)
+plt.xticks(rotation=45, ha='right', fontsize=6)
+plt.tight_layout()
+plt.show()
+ax1.set_title("NYSOFA Meals Served By Type in Yates County, 2021")
+ax1.set_xlabel("Year")
+ax1.set_ylabel("Meals Served")
+fig.tight_layout()
+fig.savefig('yatesmeals.png')
+
 #creating one row for each county for each year 
 meals_aggregate = meals.groupby(['County Name', 'Year'], as_index=False).agg({
     'Total Meals Served': 'first',
@@ -65,16 +79,25 @@ meals_aggregate.set_index("County Name", inplace=True)
 
 #adding a totals column 
 meals_aggregate['Total Meals Served'] = meals_aggregate['Home Delivered Meals Served'] + meals_aggregate['Congregate Meals Served']
+
+# making a violin plot
+plt.figure(figsize=(10, 6))  # Set the figure size
+sns.violinplot(data=meals_aggregate[['Home Delivered Meals Served', 'Congregate Meals Served']])
+plt.title('Congregate and Home-Delivered Meals Served by County in 2021')
+plt.xlabel('Meal Type')
+plt.ylabel('Number of Meals Served')
+plt.xticks([0, 1], ['Congregate', 'Home-Delivered'])
+plt.tight_layout()
+plt.savefig('violin.png')
+
 #sorting by total meals served 
 meals_sorted = meals_aggregate.sort_values(by='Total Meals Served', ascending=False)
-
 #printing informative messages about congregate meals and home delivered meals served by county
 top_5 = meals_sorted.head(5)
 print("\nTop 5 Counties Ranks by Total Number of Congregate and Home Delivered Meals Meals Served (2021):")
 print(top_5['Total Meals Served'])
 bottom_5 = meals_sorted.tail(5)
 print("\n5 Counties serving the least number of congregate and home delivered meals (2021):", bottom_5['Total Meals Served'])
-
 
 
 
