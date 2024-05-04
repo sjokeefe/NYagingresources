@@ -5,15 +5,17 @@ This project examines the distribution of access to state-wide food assistance r
 Census-level population and spatial data is also analyzed, focusing on variables that indicate economic and food insecurity amongst older adults, as well as SNAP/food stamp utilization.
 
 ## Input files 
-The first input file required is a csv from data.ny.gov, NY State's Open Data site. The csv file can be downloaded here: https://data.ny.gov/Human-Services/Congregate-Meals-Served-by-County-by-the-Office-fo/ytzm-8tkg/about_data
+1. The first input file required is a csv from data.ny.gov, NY State's Open Data site. The csv file can be downloaded here: https://data.ny.gov/Human-Services/Congregate-Meals-Served-by-County-by-the-Office-fo/ytzm-8tkg/about_data
 This file, marked as [NYSOFA_meals.csv](NYSOFA_Meals.csv) contains county-level data of congregate and home-delivered meals served to older adults in NY State since 1974. Congregate meals, served in community settings such as in multi-purpose senior centers, and home-delivered meals are targeted towards supporting low-income older adults. 
 
-The following scripts also require API requests from the United States Census Bureau. For the Census API query, a unique Census key will be necessary. In [census.py](census.py), replace variable 'key_value' with a unique census key retrieved here: https://api.census.gov/data/key_signup.html
+2. The following scripts also require API requests from the United States Census Bureau. For the Census API query, a unique Census key will be necessary. In [census.py](census.py), replace variable 'key_value' with a unique census key retrieved here: https://api.census.gov/data/key_signup.html
 
-Spatial data is retrieved from the Census website. Tiger-line shape files for New York State counties and roads can be downloaded here: https://www.census.gov/cgi-bin/geo/shapefiles/index.php
+3. Spatial data is retrieved from the Census website. Tiger-line shape files for New York State counties and roads can be downloaded here: https://www.census.gov/cgi-bin/geo/shapefiles/index.php
 The shapefiles used in script [analysis.py](analysis.py) and [yates.py](yates.py) are: 
-1. [tl_2023_us_county.zip](tl_2023_us_county.zip) - Counties and equivalent of NY State 
-2. [tl_2023_36123_roads.zip](tl_2023_36123_roads.zip) (All roads in Yates County, NY)
+    1. [tl_2023_us_county.zip](tl_2023_us_county.zip) - Counties and equivalent of NY State 
+    2. [tl_2023_36123_roads.zip](tl_2023_36123_roads.zip) (All roads in Yates County, NY)
+
+4. The last input file needed is a zip file of [historical SNAP retailer data](historical-snap-retailer-locator-data-2023.12.31 (1).zip) from the United States Department of Agriculture. The file can be downloaded [here](https://www.fns.usda.gov/snap/retailer/historicaldata)
 
 ## Scripts 
 To view contents of the repository, run the following scripts in this order: 
@@ -35,28 +37,29 @@ Further analysis using outputs from both [NYSOFA.py](NYSOFA.py) and [census.py](
 ## Results
 Key Findings:
 
-5 Counties serving the least number of congregate and home delivered meals (2021): 
-Schuyler     35914
-Tioga        31511
-Sullivan     31463
-[Yates](yates.py) 15617
-St. Regis    10162
+# 5 Counties serving the least number of congregate and home delivered meals (2021): 
+- Schuyler     35914
+- Tioga        31511
+- Sullivan     31463
+- [Yates](yates.py) 15617
+- St. Regis    10162
 
-NY Counties with zero (0) multi-purpose community centers for older adult services:
-Allegany
-Delaware
-Essex
-Herkimer
-Lewis
-Livingston
-Madison
-Otsego
-St. Lawrence
-St. Regis
-Wayne
-[Yates](yates.py)
+# NY Counties with zero (0) multi-purpose community centers for older adult services:
+- Allegany
+- Delaware
+- Essex
+- Herkimer
+- Lewis
+- Livingston
+- Madison
+- Otsego
+- St. Lawrence
+- St. Regis
+- Wayne
+- [Yates](yates.py)
 
 
-A closer look at Yates County, New York shows that the county has no multi-purpose senior centers where older adults can go to both receive meals and interact with others. In addition, [yates.qgz](yates.qgz) highlights the available grocery retailers in the county where SNAP benefits can be used. As the older adult population across the U.S. continues to age, similar analysis should be conducted across states to highlight counties where older adults could be better supported by congregate meal opportunities as well as proximity to SNAP retail grocery stores. 
+# Future considerations: 
+A closer look at Yates County, New York shows that the county has no multi-purpose senior centers where older adults can go to both receive meals and interact with others. A heatmap of [multi-purpose senior centers by county](heatmapofcommunitysites.png) shows that surrounding counties have very limited opportunities for older adult community engagement including congregate meals. In addition, [yates.qgz](yates.qgz) highlights the available grocery retailers in the county where SNAP benefits can be used. As the older adult population across the U.S. continues to age, similar analysis should be conducted across states to highlight counties where older adults could be better supported by congregate meal opportunities as well as proximity to SNAP retail grocery stores. 
 
 
