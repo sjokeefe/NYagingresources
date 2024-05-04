@@ -11,9 +11,9 @@ This file, marked as [NYSOFA_meals.csv](NYSOFA_Meals.csv) contains county-level 
 The following scripts also require API requests from the United States Census Bureau. For the Census API query, a unique Census key will be necessary. In [census.py](census.py), replace variable 'key_value' with a unique census key retrieved here: https://api.census.gov/data/key_signup.html
 
 Spatial data is retrieved from the Census website. Tiger-line shape files for New York State counties and roads can be downloaded here: https://www.census.gov/cgi-bin/geo/shapefiles/index.php
-The shapefiles used in script analysis.py and yates.py are: 
-1. tl_2023_us_county.zip (Counties and equivalent of NY State)
-2. tl_2023_36123_roads.zip (All roads in Yates County, NY)
+The shapefiles used in script [analysis.py](analysis.py) and [yates.py](yates.py) are: 
+1. [tl_2023_us_county.zip](tl_2023_us_county.zip) - Counties and equivalent of NY State 
+2. [tl_2023_36123_roads.zip](tl_2023_36123_roads.zip) (All roads in Yates County, NY)
 
 ## Scripts 
 To view contents of the repository, run the following scripts in this order: 
@@ -28,7 +28,7 @@ Creates visualizations using matplotlib and seaborn.
 3. [analysis.py](analysis.py)
 Further analysis using outputs from both [NYSOFA.py](NYSOFA.py) and [census.py](census.py). 
 
-4. 
+4. [yates.py](yates.py) This script looks more closely at the food assistance resources available to older adult residents of Yates County, NY. A geopackage is exported for analysis in QGIS. 
 
 ## Results
 Based on the analysis conducted in the scripts above, I noticed that Madison County, New York has Zero Multi-Purpose Senior Centers (places where older adults could obtain congregate meals or where home-delivered meals might be distributed from), but also had the 4th highest percentage of all SNAP participating households with an older adult member (age 65+), roughly 57.95%. 

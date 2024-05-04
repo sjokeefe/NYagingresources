@@ -100,7 +100,6 @@ bottom_5 = meals_sorted.tail(5)
 print("\n5 Counties serving the least number of congregate and home delivered meals (2021):", bottom_5['Total Meals Served'])
 
 
-
 #Open data NY api request for the directory multi-purpose senior centers, which provide services including but not limited to congregate meals   
 url = "https://data.ny.gov/resource/t4ba-giyx.json"
 response = requests.get(url)
@@ -130,8 +129,8 @@ crgeo = gpd.GeoDataFrame(cr, crs='EPSG:4326', geometry=gpd.points_from_xy(cr.lon
 # Reprojecting the GeoDataFrame to UTM Zone 18N (EPSG:26918)
 crgeo = crgeo.to_crs('EPSG:26918')
 
-output_filename = "communityresources.gpkg"
-crgeo.to_file(output_filename, driver="GPKG")
+output_file = "AAAresources.gpkg"
+crgeo.to_file(output_file, layer='multipurpose centers', driver='GPKG')
 
 #counting the number of locations in each county
 cr_by_county = crgeo.groupby('county_name').size()
@@ -157,10 +156,8 @@ geodata.drop(columns='_merge',inplace=True)
 #filling in nan values with zero for QGIS purposes
 geodata['Number of Community Sites'].fillna(0, inplace=True)
 
-#writing the dataframe to a .gpkg file with layer set to 'earnings'
-geodata.to_file("cr.gpkg",layer="resources")
-
-
+#writing the dataframe to a .gpkg file 
+geodata.to_file(output_file,layer="resources", driver='GPKG', append=True)
 
 
 #Open data NY api request for the directory of AAA sites 
@@ -229,8 +226,7 @@ for column in trimmed:
     del AAA_by_county[column]
 
 #coverting to a geoPackage 
-output_filename2 = "AAAmeals.gpkg"
-AAA_by_county.to_file(output_filename2, driver="GPKG")
+AAA_by_county.to_file(output_file, layer= 'AAA', driver="GPKG", append=True)
 
 
 

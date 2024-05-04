@@ -12,6 +12,9 @@ yates_roads = gpd.read_file('tl_2023_36123_roads.zip')
 yates = gpd.read_file('tl_2023_us_county.zip')
 yates = yates[(yates['STATEFP']=='36')& (yates['COUNTYFP']=='123')]
 
+#creating a layer that is just state recognized roads 
+yates_state_roads = yates_roads[yates_roads['RTTYP']=='S']
+
 #reading the historical SNAP data 
 SNAP = pd.read_csv('historical-snap-retailer-locator-data-2023.12.31 (1).zip')
 
@@ -33,3 +36,4 @@ output = 'yates_stores_and_roads.gpkg'
 gdf_points.to_file(output, layer='grocery', driver='GPKG')
 yates_roads.to_file(output, layer='roads', driver='GPKG', append=True)
 yates.to_file(output, layer='county',driver='GPKG', append=True)
+yates_state_roads.to_file(output, layer='stateroads', driver='GPKG', append=True)
