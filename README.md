@@ -34,7 +34,7 @@ Further analysis using outputs from both [NYSOFA.py](NYSOFA.py) and [census.py](
 
 Two QGIS projects are included with this repository using the outputs from the scripts above. Please load [NYSOFA.qgz](NYSOFA.qgz) and [yates.qgz](yates.qgz) to examine the origin of related .png files within the repository. 
 
-## Results Highlights
+## Results/Output Highlights 
 
 ### 5 Counties serving the least number of congregate and home delivered meals (2021): 
 - Schuyler     35,914 meals
@@ -58,7 +58,7 @@ Two QGIS projects are included with this repository using the outputs from the s
 - [Yates](yates.py)
 
 
-## Future considerations: 
+## Future Considerations: 
 A closer look at Yates County, New York shows that the county has no multi-purpose senior centers where older adults can go to both receive meals and interact with others. A heatmap of [multi-purpose senior centers by county](heatmapofcommunitysites.png) shows that surrounding counties have very limited opportunities for older adult community engagement including congregate meals. In addition, [yates.qgz](yates.qgz) highlights the available grocery retailers in the county where SNAP benefits can be used. As the older adult population across the U.S. continues to age, similar analysis should be conducted across states to highlight counties where older adults could be better supported by congregate meal opportunities as well as proximity to SNAP retail grocery stores. 
 
 
