@@ -34,8 +34,7 @@ Further analysis using outputs from both [NYSOFA.py](NYSOFA.py) and [census.py](
 
 Two QGIS projects are included with this repository using the outputs from the scripts above. Please load [NYSOFA.qgz](NYSOFA.qgz) and [yates.qgz](yates.qgz) to examine the origin of related .png files within the repository. 
 
-## Results
-Key Findings:
+## Results Highlights
 
 ### 5 Counties serving the least number of congregate and home delivered meals (2021): 
 - Schuyler     35,914 meals
