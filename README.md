@@ -30,7 +30,33 @@ Further analysis using outputs from both [NYSOFA.py](NYSOFA.py) and [census.py](
 
 4. [yates.py](yates.py) This script looks more closely at the food assistance resources available to older adult residents of Yates County, NY. A geopackage is exported for analysis in QGIS. 
 
+2 QGIS projects are included with this repository using the outputs from the scripts above. Please load [NYSOFA.qgz](NYSOFA.qgz) and [yates.qgz](yates.qgz) to examine the origin of related .png files within the repository. 
+
 ## Results
-Based on the analysis conducted in the scripts above, I noticed that Madison County, New York has Zero Multi-Purpose Senior Centers (places where older adults could obtain congregate meals or where home-delivered meals might be distributed from), but also had the 4th highest percentage of all SNAP participating households with an older adult member (age 65+), roughly 57.95%. 
+Key Findings:
+
+5 Counties serving the least number of congregate and home delivered meals (2021): 
+Schuyler     35914
+Tioga        31511
+Sullivan     31463
+[Yates](yates.py) 15617
+St. Regis    10162
+
+NY Counties with zero (0) multi-purpose community centers for older adult services:
+Allegany
+Delaware
+Essex
+Herkimer
+Lewis
+Livingston
+Madison
+Otsego
+St. Lawrence
+St. Regis
+Wayne
+[Yates](yates.py)
+
+
+A closer look at Yates County, New York shows that the county has no multi-purpose senior centers where older adults can go to both receive meals and interact with others. In addition, [yates.qgz](yates.qgz) highlights the available grocery retailers in the county where SNAP benefits can be used. As the older adult population across the U.S. continues to age, similar analysis should be conducted across states to highlight counties where older adults could be better supported by congregate meal opportunities as well as proximity to SNAP retail grocery stores. 
 
 

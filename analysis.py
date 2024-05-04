@@ -67,12 +67,12 @@ by_below = census['% below pl 65+'].sort_values(ascending=False)
 print("\nCounties with the Highest Percent of Older Adults (age 65+) living below the poverty line")
 print(by_below.head(10))
 
-#highlighting genesee county in a visual representation of percent of all households on SNAP with an older adult 
+#highlighting yates county in a visual representation of percent of all households on SNAP with an older adult 
 by_percent = by_percent.reset_index()
 plt.figure(figsize=(10, 6))
 bars = plt.bar(by_percent['NAME'], by_percent['percent'], color='skyblue')
 
-highlighted_county = 'Genesee'
+highlighted_county = 'Yates'
 highlighted_index = by_percent[by_percent['NAME'] == highlighted_county].index[0]
 bars[highlighted_index].set_color('orange')
 

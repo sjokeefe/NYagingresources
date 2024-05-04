@@ -10,6 +10,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 plt.rcParams['figure.dpi'] = 300
 
+#reading the tigerline shape file of NY county 
+NY = gpd.read_file('tl_2023_us_county.zip')
+NY_NY = NY[NY['STATEFP'] == '36']
+
 
 #reading in data on meals served by county
 meals = pd.read_csv('NYSOFA_Meals.csv')
@@ -17,20 +21,6 @@ meals = pd.read_csv('NYSOFA_Meals.csv')
 meals = pd.DataFrame(meals)
 meals = meals.rename(columns = {'NYSOFA County Code': 'County Code', 'Meal Units Served': 'Total Meals Served'})
 
-
-#looking at meals served over time in Madison county 
-quicklook = meals[meals['County Name']=='Madison']
-fig, ax1 = plt.subplots()
-sns.barplot(data=quicklook,x='Year',y='Total Meals Served',
-            hue='Meal Type',palette='deep',ax=ax1)
-plt.xticks(rotation=45, ha='right', fontsize=6)
-plt.tight_layout()
-plt.show()
-ax1.set_title("NYSOFA Meals Served (Madison County, Since 1974)")
-ax1.set_xlabel("Year")
-ax1.set_ylabel("Meals Served")
-fig.tight_layout()
-fig.savefig('madisonmeals.png')
 
 #looking at meals served over time in onondaga county 
 quicklook = meals[meals['County Name']=='Onondaga']
@@ -45,6 +35,20 @@ ax1.set_xlabel("Year")
 ax1.set_ylabel("Meals Served")
 fig.tight_layout()
 fig.savefig('onondagameals.png')
+
+#looking at meals served over time in yates county 
+quicklook = meals[meals['County Name']=='Yates']
+fig, ax1 = plt.subplots()
+sns.barplot(data=quicklook,x='Year',y='Total Meals Served',
+            hue='Meal Type',palette='deep',ax=ax1)
+plt.xticks(rotation=45, ha='right', fontsize=6)
+plt.tight_layout()
+plt.show()
+ax1.set_title("NYSOFA Meals Served (Yates County, Since 1974)")
+ax1.set_xlabel("Year")
+ax1.set_ylabel("Meals Served")
+fig.tight_layout()
+fig.savefig('yatestotalmeals.png')
 
 
 #parcing out certain years 
@@ -227,7 +231,8 @@ for column in trimmed:
 
 #coverting to a geoPackage 
 AAA_by_county.to_file(output_file, layer= 'AAA', driver="GPKG", append=True)
-
+#adding state boundary
+NY_NY.to_file(output_file, layer='state', driver='GPKG', append=True)
 
 
 
