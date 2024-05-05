@@ -10,10 +10,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 plt.rcParams['figure.dpi'] = 300
 
-#reading the tigerline shape file of NY county 
-NY = gpd.read_file('tl_2023_us_county.zip')
-NY_NY = NY[NY['STATEFP'] == '36']
-
 
 #reading in data on meals served by county
 meals = pd.read_csv('NYSOFA_Meals.csv')
@@ -21,6 +17,20 @@ meals = pd.read_csv('NYSOFA_Meals.csv')
 meals = pd.DataFrame(meals)
 meals = meals.rename(columns = {'NYSOFA County Code': 'County Code', 'Meal Units Served': 'Total Meals Served'})
 
+
+#looking at meals served over time in Madison county 
+quicklook = meals[meals['County Name']=='Madison']
+fig, ax1 = plt.subplots()
+sns.barplot(data=quicklook,x='Year',y='Total Meals Served',
+            hue='Meal Type',palette='deep',ax=ax1)
+plt.xticks(rotation=45, ha='right', fontsize=6)
+plt.tight_layout()
+plt.show()
+ax1.set_title("NYSOFA Meals Served (Madison County, Since 1974)")
+ax1.set_xlabel("Year")
+ax1.set_ylabel("Meals Served")
+fig.tight_layout()
+fig.savefig('madisonmeals.png')
 
 #looking at meals served over time in onondaga county 
 quicklook = meals[meals['County Name']=='Onondaga']
@@ -35,20 +45,6 @@ ax1.set_xlabel("Year")
 ax1.set_ylabel("Meals Served")
 fig.tight_layout()
 fig.savefig('onondagameals.png')
-
-#looking at meals served over time in yates county 
-quicklook = meals[meals['County Name']=='Yates']
-fig, ax1 = plt.subplots()
-sns.barplot(data=quicklook,x='Year',y='Total Meals Served',
-            hue='Meal Type',palette='deep',ax=ax1)
-plt.xticks(rotation=45, ha='right', fontsize=6)
-plt.tight_layout()
-plt.show()
-ax1.set_title("NYSOFA Meals Served (Yates County, Since 1974)")
-ax1.set_xlabel("Year")
-ax1.set_ylabel("Meals Served")
-fig.tight_layout()
-fig.savefig('yatestotalmeals.png')
 
 
 #parcing out certain years 
@@ -104,6 +100,7 @@ bottom_5 = meals_sorted.tail(5)
 print("\n5 Counties serving the least number of congregate and home delivered meals (2021):", bottom_5['Total Meals Served'])
 
 
+
 #Open data NY api request for the directory multi-purpose senior centers, which provide services including but not limited to congregate meals   
 url = "https://data.ny.gov/resource/t4ba-giyx.json"
 response = requests.get(url)
@@ -133,8 +130,8 @@ crgeo = gpd.GeoDataFrame(cr, crs='EPSG:4326', geometry=gpd.points_from_xy(cr.lon
 # Reprojecting the GeoDataFrame to UTM Zone 18N (EPSG:26918)
 crgeo = crgeo.to_crs('EPSG:26918')
 
-output_file = "AAAresources.gpkg"
-crgeo.to_file(output_file, layer='multipurpose centers', driver='GPKG')
+output_filename = "communityresources.gpkg"
+crgeo.to_file(output_filename, driver="GPKG")
 
 #counting the number of locations in each county
 cr_by_county = crgeo.groupby('county_name').size()
@@ -161,7 +158,8 @@ geodata.drop(columns='_merge',inplace=True)
 geodata['Number of Community Sites'].fillna(0, inplace=True)
 
 #writing the dataframe to a .gpkg file 
-geodata.to_file(output_file,layer="resources", driver='GPKG', append=True)
+geodata.to_file("cr.gpkg",layer="resources")
+
 
 
 #Open data NY api request for the directory of AAA sites 
@@ -230,9 +228,8 @@ for column in trimmed:
     del AAA_by_county[column]
 
 #coverting to a geoPackage 
-AAA_by_county.to_file(output_file, layer= 'AAA', driver="GPKG", append=True)
-#adding state boundary
-NY_NY.to_file(output_file, layer='state', driver='GPKG', append=True)
+output_filename2 = "AAAmeals.gpkg"
+AAA_by_county.to_file(output_filename2, driver="GPKG")
 
 
 

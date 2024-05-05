@@ -6,9 +6,7 @@ Census Data Analysis
 """
 
 import pandas as pd
-import matplotlib.pyplot as plt
 import requests
-import pandas as pd
 
 # API endpoint for 5-year estimates 2017-2021
 api = 'https://api.census.gov/data/2021/acs/acs5'
